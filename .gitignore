@@ -118,8 +118,8 @@ GitHub.sublime-settings
 .histor
 
 # Dev files
-.envrc
-.env
-.env.dev
-.env.prod
-.env.prod.db
+# .envrc
+# .env
+# .env.dev
+# .env.prod
+# .env.prod.db
