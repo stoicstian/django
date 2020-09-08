@@ -119,7 +119,7 @@ GitHub.sublime-settings
 
 # Dev files
 .envrc
-.env
-.env.dev
-.env.prod
-.env.prod.db
+# .env
+# .env.dev
+# .env.prod
+# .env.prod.db
