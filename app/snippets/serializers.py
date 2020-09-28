@@ -18,7 +18,7 @@ class SnippetSerializer(serializers.ModelSerializer):
 #     language = serializers.ChoiceField(choices=LANGUAGE_CHOICES, default="python")
 #     style = serializers.ChoiceField(choices=STYLE_CHOICES, default="friendly")
 
-#     def create(self, validated_data):
+#     def create(self, kalidated_data):
 #         print("Create fue llamado")
 #         return Snippet.objects.create(**validated_data)
 
@@ -28,6 +28,6 @@ class SnippetSerializer(serializers.ModelSerializer):
 #         instance.code = validated_data.get("code", instance.code)
 #         instance.linenos = validated_data.get("linenos", instance.linenos)
 #         instance.language = validated_data.get("language", instance.language)
-#         instance.style = validated_data.get("style", instance.style)
+#         instancestyle = validated_data.get("style", instance.style)
 #         instance.save()
 #         return instance
