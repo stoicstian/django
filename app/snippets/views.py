@@ -1,4 +1,4 @@
-from os import stat
+from django.db.models import manager
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -15,42 +15,41 @@ from rest_framework.status import (
     HTTP_204_NO_CONTENT,
     HTTP_404_NOT_FOUND,
 )
+from rest_framework.views import APIView
 from .models import Snippet
 from .serializers import SnippetSerializer
 from django.views.decorators.csrf import csrf_exempt
 
 
-@api_view(["GET", "POST"])
-def snippet_list(request, format):
-    if request.method == "GET":
-        snippet = Snippet.objects.all()
-        serializer = SnippetSerializer(snippet, many=True)
+class SnippetList(APIView):
+    def get(self, request, format=None):
+        snippets = Snippet.objects.all()
+        serializer = SnippetSerializer(snippets, many=True)
         return Response(serializer.data)
 
-    elif request.method == "POST":
+    def post(self, request, format=None):
         serializer = SnippetSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.data, statu=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET", "PUT", "DELETE"])
-def snippet_detail(request, pk, format):
-    try:
-        snippet = Snippet.objects.get(pk=pk)
-    except Snippet.DoesNotExist:
-        return Response(status=HTTP_404_NOT_FOUND)
-
-    if request.method == "GET":
+class SnippetDetail(APIView):
+    def get_object(self, pk):
+        snippet = self.get_object(pk)
         serializer = SnippetSerializer(snippet)
         return Response(serializer.data)
-    elif request.method == "PUT":
+
+    def put(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         serializer = SnippetSerializer(snippet, data=request.data)
         if serializer.is_valid():
-            serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=HTTP_404_NOT_FOUND)
-    elif request.method == "DELETE":
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        snippet = self.get_object(pk)
         snippet.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_204_NO_CONTENT)
